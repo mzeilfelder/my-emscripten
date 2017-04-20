@@ -28,7 +28,7 @@ void one_iter()
     }
     driver->beginScene(ECBF_COLOR | ECBF_DEPTH, SColor(255,100,101,140));
 
-//    smgr->drawAll();
+    smgr->drawAll();
     guienv->drawAll();
 
     driver->endScene();
@@ -52,17 +52,20 @@ int main()
 	smgr = device->getSceneManager();
 	guienv = device->getGUIEnvironment();
 	
-	device->setWindowCaption(L"Hello World! - Irrlicht Engine Demo");
+	device->setWindowCaption(L"Hello World!");
 	guienv->addStaticText(L"Hello World! This is the Irrlicht on emscripten!", rect<s32>(10,10,260,22), true);
 
 	const io::path mediaPath = getExampleMediaPath();
 
+#if 1
 	IAnimatedMesh* mesh = smgr->getMesh(mediaPath + "sydney.md2");
+//	IAnimatedMesh* mesh = smgr->getMesh(mediaPath + "room.3ds");
 	if (!mesh)
 	{
 		device->drop();
 		return 1;
 	}
+	
 	IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode( mesh );
 	if (node)
 	{
@@ -70,6 +73,20 @@ int main()
 		node->setMD2Animation(scene::EMAT_STAND);
 		node->setMaterialTexture( 0, driver->getTexture(mediaPath + "sydney.bmp") );
 	}
+#else
+	IAnimatedMesh* mesh = smgr->getMesh("media/box.obj");
+	if (!mesh)
+	{
+		device->drop();
+		return 1;
+	}
+	IMeshSceneNode * node = smgr->addMeshSceneNode(mesh);
+	if (node)
+	{
+		node->setMaterialFlag(EMF_LIGHTING, false);
+		node->setMaterialTexture( 0, driver->getTexture(mediaPath + "sydney.bmp") );
+	}	
+#endif
 
 	smgr->addCameraSceneNode(0, vector3df(0,30,-40), vector3df(0,5,0));
 	//scene::ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS(0,100.0f,1.2f);

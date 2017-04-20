@@ -362,7 +362,8 @@ void one_iter()
 
 int main()
 {
-	device = createDevice(video::EDT_OGLES2, dimension2d<u32>(640, 480), 16, false, false, false, 0);
+	//device = createDevice(video::EDT_OGLES2, dimension2d<u32>(640, 480), 16, false, false, false, 0);
+	device = createDevice(video::EDT_WEBGL1, dimension2d<u32>(640, 480), 16, false, false, false, 0);
 
 	if (!device)
 		return 1;

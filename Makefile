@@ -6,7 +6,8 @@
 Target := emscripten_testing
 # List of source files, separated by spaces
 #Sources := main.cpp
-Sources := test_primitives.cpp
+#Sources := test_primitives.cpp
+Sources := test_driver.cpp
 #Sources := gui_element_test.cpp
 #Sources := sdl_mouse.cpp
 #Sources := quake_map.cpp

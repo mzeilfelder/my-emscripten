@@ -36,19 +36,23 @@ void one_iter()
 
 int main()
 {
-	device = createDevice(video::EDT_OGLES2, dimension2d<u32>(640, 480), 32, false, false, false, 0);
+	//device = createDevice(video::EDT_OGLES2, dimension2d<u32>(640, 480), 32, false, false, false, 0);
+	device = createDevice(video::EDT_WEBGL1, dimension2d<u32>(640, 480), 32, false, false, false, 0);
 
 	if (!device)
 		return 1;
+	
+	ISceneManager* smgr = device->getSceneManager();	
 
 	device->getFileSystem()->addFileArchive(getExampleMediaPath() + "map-20kdm2.pk3");
-
-	ISceneManager* smgr = device->getSceneManager();
 	scene::IAnimatedMesh* mesh = smgr->getMesh("20kdm2.bsp");
+	
 	scene::ISceneNode* node = 0;
-
 	if (mesh)
-		node = smgr->addOctreeSceneNode(mesh->getMesh(0), 0, -1, 1024);
+	{
+		node = smgr->addMeshSceneNode(mesh->getMesh(0));
+//		node = smgr->addOctreeSceneNode(mesh->getMesh(0), 0, -1, 1024);
+	}
 	if (node)
 		node->setPosition(core::vector3df(-1300,-144,-1249));
 
