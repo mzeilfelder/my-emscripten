@@ -7,10 +7,11 @@ Target := emscripten_testing
 # List of source files, separated by spaces
 #Sources := main.cpp
 #Sources := test_primitives.cpp
-Sources := test_driver.cpp
+#Sources := test_driver.cpp
 #Sources := gui_element_test.cpp
+Sources := quake_map.cpp
 #Sources := sdl_mouse.cpp
-#Sources := quake_map.cpp
+
 # Path to Irrlicht directory, should contain include/ and lib/
 IrrlichtHome := ../..
 # Path for the executable. Note that Irrlicht.dll should usually also be there for win32 systems
@@ -51,6 +52,8 @@ all_win32: LDFLAGS += -lopengl32 -lEGL -lGLESv1_CM -lGLESv2 -lm
 static_win32: LDFLAGS += -lgdi32 -lwinspool -lcomdlg32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32 -lopengl32 -lEGL -lGLESv1_CM -lGLESv2
 # name of the binary - only valid for targets which set SYSTEM
 DESTPATH = $(BinPath)/$(Target)$(SUF)
+
+emscripten: all_emscripten
 
 all_linux all_win32 all_emscripten static_win32:
 	$(warning Building...)
