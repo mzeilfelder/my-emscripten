@@ -1,6 +1,7 @@
 #include <irrlicht.h>
 #include "exampleHelper.h"
 #include <emscripten.h>
+#include <emscripten/html5.h>
 
 using namespace irr;
 using namespace core;
@@ -10,6 +11,7 @@ using namespace io;
 using namespace gui;
 
 IrrlichtDevice *device = 0;
+ISceneNodeAnimatorCameraFPS* fpsCamAnimator = 0;
 
 /*
 	emscripten can't run things in an endless-loop or otherwise the browse will consider
@@ -56,11 +58,11 @@ int main()
 	if (node)
 		node->setPosition(core::vector3df(-1300,-144,-1249));
 
-	smgr->addCameraSceneNodeFPS(0, 10.f);
+	irr::scene::ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS();
+	fpsCamAnimator = static_cast<ISceneNodeAnimatorCameraFPS*>(*(camera->getAnimators().begin()));
 
 	device->getCursorControl()->setVisible(false);
 
-	
 	// Setting fps to 0 or a negative value will use the browser’s requestAnimationFrame mechanism to call the main loop function. 
 	// emscripten documentation recommends that one. 
 	// But you can also set another fps value and the browser will try to call the main-loop as often.

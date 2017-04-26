@@ -35,7 +35,9 @@ void one_iter()
 	for ( int i=1; i<200; i+= 3 )
 		driver->drawPixel(i, 50+i, video::SColor(255, 255, 100 + i*5, 50 + i*10));
 	
+	driver->draw2DLine( core::position2d<s32>(10,10), core::position2d<s32>(150, 100), video::SColor(255, 127, 255, 127));
 	driver->draw2DImage(textureAxe512x512, core::rect<s32>(0,200, 256, 456), core::rect<s32>(0,0,512,512), 0, 0, true);
+	
 	driver->draw2DImage(textureAxe512x512, core::rect<s32>(300,200, 400, 300), core::rect<s32>(0,0,100,100), 0, 0, false);
 	
 	
@@ -50,6 +52,7 @@ void one_iter()
 
 	smgr->drawAll(); // for camera
 
+	/*
 	video::SMaterial mat;
 	mat.Lighting = false;
 	driver->setMaterial(mat);
@@ -57,7 +60,7 @@ void one_iter()
 
 	driver->draw3DLine(core::vector3df(-10, 0, 0), core::vector3df(30,20,10), video::SColor(255, 255, 0, 0));
 	driver->draw3DLine(core::vector3df(0, -10, 0), core::vector3df(20,10,0), video::SColor(255, 0, 255, 0));
-
+	*/
     
 //    guienv->drawAll();
 
