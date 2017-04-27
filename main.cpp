@@ -15,6 +15,55 @@ IVideoDriver* driver = 0;
 ISceneManager* smgr = 0;
 IGUIEnvironment* guienv = 0;
 
+enum
+{
+	GUI_ID_BUTTON_LOAD
+};
+
+
+class MyEventReceiver : public IEventReceiver
+{
+public:
+	MyEventReceiver() { }
+
+	virtual bool OnEvent(const SEvent& event)
+	{
+		if (event.EventType == EET_GUI_EVENT)
+		{
+			s32 id = event.GUIEvent.Caller->getID();
+			switch(event.GUIEvent.EventType)
+			{
+				case EGET_BUTTON_CLICKED:
+				{
+					switch ( id )
+					{
+						case GUI_ID_BUTTON_LOAD:
+						{
+							// just testing what happens when loading a big file							
+							//core::stringc url("http://www.irrgheist.com/media/div/hcraft_v1_3b.zip");				// ~25mb
+							core::stringc url("http://www.irrgheist.com/emscripten/examples/01.HelloWorld.js");	// ~5mb
+							
+							void* pbuffer = nullptr;
+							int pnum;
+							int perror;
+							
+							emscripten_wget_data(url.c_str(), &pbuffer, &pnum, &perror);
+						
+							wprintf(L"loaded %d bytes\n", pnum);
+							break;
+						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+
+		return false;
+	}
+};
+
 /*
 	emscripten can't run things in an endless-loop or otherwise the browse will consider
 	the script to hang.
@@ -34,10 +83,10 @@ void one_iter()
     driver->endScene();
 }
 
+MyEventReceiver eventReceiver;	
 
 int main()
 {
-	
 	irr::SIrrlichtCreationParameters params;
 	params.DriverType = video::EDT_WEBGL1;
 //	params.DriverType = video::EDT_OGLES2;
@@ -47,6 +96,8 @@ int main()
 	
 	if (!device)
 		return 1;
+	
+	device->setEventReceiver(&eventReceiver);	
 
 	driver = device->getVideoDriver();
 	smgr = device->getSceneManager();
@@ -54,6 +105,7 @@ int main()
 	
 	device->setWindowCaption(L"Hello World!");
 	guienv->addStaticText(L"Hello World! This is the Irrlicht on emscripten!", rect<s32>(10,10,260,22), true);
+	guienv->addButton(rect<s32>(10, 30, 110, 50), 0, GUI_ID_BUTTON_LOAD, L"LOAD");
 
 	const io::path mediaPath = getExampleMediaPath();
 
