@@ -5,11 +5,11 @@
 # Name of the executable created (.exe will be added automatically if necessary)
 Target := emscripten_testing
 # List of source files, separated by spaces
-#Sources := main.cpp
+Sources := main.cpp
 #Sources := test_primitives.cpp
 #Sources := test_driver.cpp
 #Sources := gui_element_test.cpp
-Sources := quake_map.cpp
+#Sources := quake_map.cpp
 #Sources := sdl_mouse.cpp
 
 # Path to Irrlicht directory, should contain include/ and lib/
@@ -45,7 +45,7 @@ all_win32 clean_win32 static_win32: SYSTEM=Win32-gcc
 all_win32 clean_win32 static_win32: SUF=.exe
 all_emscripten clean_emscripten: SUF=.html
 all_emscripten: CXXFLAGS += -fno-exceptions -fno-rtti -fstrict-aliasing  -std=gnu++11 -U__STRICT_ANSI__
-all_emscripten: LDFLAGS += -lGL -lSDL --preload-file ./media@/media -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=1
+all_emscripten: LDFLAGS += -lGL -lSDL --preload-file ./media@/media -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=1 -s EMTERPRETIFY=1 -s EMTERPRETIFY_ASYNC=1
 #all_emscripten: LDFLAGS += -lGL -lSDL --preload-file ../../media@/media -s ALLOW_MEMORY_GROWTH=1 -s NO_EXIT_RUNTIME=1 -s FULL_ES2=1 
 static_win32: CPPFLAGS += -D_IRR_STATIC_LIB_
 all_win32: LDFLAGS += -lopengl32 -lEGL -lGLESv1_CM -lGLESv2 -lm
