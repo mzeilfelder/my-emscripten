@@ -39,16 +39,16 @@ public:
 					{
 						case GUI_ID_BUTTON_LOAD:
 						{
-							// just testing what happens when loading a big file							
+							// just testing what happens when loading a big file
 							//core::stringc url("http://www.irrgheist.com/media/div/hcraft_v1_3b.zip");				// ~25mb
 							core::stringc url("http://www.irrgheist.com/emscripten/examples/01.HelloWorld.js");	// ~5mb
-							
+
 							void* pbuffer = nullptr;
 							int pnum;
 							int perror;
-							
+
 							emscripten_wget_data(url.c_str(), &pbuffer, &pnum, &perror);
-						
+
 							wprintf(L"loaded %d bytes\n", pnum);
 							break;
 						}
@@ -70,7 +70,7 @@ public:
 */
 void one_iter()
 {
-    if(!device->run()) 
+    if(!device->run())
 	{
         emscripten_cancel_main_loop();
         return;
@@ -83,7 +83,7 @@ void one_iter()
     driver->endScene();
 }
 
-MyEventReceiver eventReceiver;	
+MyEventReceiver eventReceiver;
 
 int main()
 {
@@ -93,18 +93,18 @@ int main()
 	params.WindowSize = core::dimension2d<u32>(640, 480);
 	params.LoggingLevel = ELL_DEBUG;
 	device = createDeviceEx(params);
-	
+
 	if (!device)
 		return 1;
-	
-	device->setEventReceiver(&eventReceiver);	
+
+	device->setEventReceiver(&eventReceiver);
 
 	driver = device->getVideoDriver();
 	smgr = device->getSceneManager();
 	guienv = device->getGUIEnvironment();
-	
+
 	device->setWindowCaption(L"Hello World!");
-	guienv->addStaticText(L"Hello World! This is the Irrlicht on emscripten!", rect<s32>(10,10,260,22), true);
+	guienv->addEditBox(L"Hello World! This is the Irrlicht on emscripten!", rect<s32>(10,10,260,22), true);
 	guienv->addButton(rect<s32>(10, 30, 110, 50), 0, GUI_ID_BUTTON_LOAD, L"LOAD");
 
 	const io::path mediaPath = getExampleMediaPath();
@@ -117,7 +117,7 @@ int main()
 		device->drop();
 		return 1;
 	}
-	
+
 	IAnimatedMeshSceneNode* node = smgr->addAnimatedMeshSceneNode( mesh );
 	if (node)
 	{
@@ -137,17 +137,17 @@ int main()
 	{
 		node->setMaterialFlag(EMF_LIGHTING, false);
 		node->setMaterialTexture( 0, driver->getTexture(mediaPath + "sydney.bmp") );
-	}	
+	}
 #endif
 
 	smgr->addCameraSceneNode(0, vector3df(0,30,-40), vector3df(0,5,0));
 	//scene::ICameraSceneNode* camera = smgr->addCameraSceneNodeFPS(0,100.0f,1.2f);
 
 
-	// Setting fps to 0 or a negative value will use the browser’s requestAnimationFrame mechanism to call the main loop function. 
-	// emscripten documentation recommends that one. 
+	// Setting fps to 0 or a negative value will use the browser’s requestAnimationFrame mechanism to call the main loop function.
+	// emscripten documentation recommends that one.
 	// But you can also set another fps value and the browser will try to call the main-loop as often.
-	int fps = 0;	
+	int fps = 0;
 	int simulate_infinite_loop = 1;
 	emscripten_set_main_loop(one_iter, fps, simulate_infinite_loop);
 
