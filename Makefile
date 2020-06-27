@@ -33,8 +33,8 @@ else
   CXXFLAGS += -O3
 endif
 
-#default target is Linux
-all: all_linux
+#default target is emscripten
+all: all_emscripten
 
 # target specific settings
 all_linux all_emscripten all_win32 static_win32: LDFLAGS += -L$(IrrlichtHome)/lib/$(SYSTEM) -lIrrlicht
